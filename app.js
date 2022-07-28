@@ -1,23 +1,52 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require("cors");
 const { ordersModel, usersModel } = require('./Models/models');
+const { isAuth } = require('./Utilities/authorization');
+const { authorize } = require('./Utilities/middleware.js');
 const app = express();
+const route = express.Router();
 
 const port = 3001;
 
+
 mongoose.connect("mongodb+srv://Sandip12:sandip12@instaclone.d7yn26d.mongodb.net/LaundryCart?retryWrites=true&w=majority", () => {
-	console.log("connect to db");
+	console.log("Successfully connected to LaundryCart Database");
 }, (err) => { console.log(err) });
 
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
 
-app.get("/", async (req, res) => {
-	const data = await Orders.find();
-	res.send(data);
-});
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cors());
+route.use(authorize);
 
-route.post('/order', async(req, res) => {
+
+app.listen(port, () => {
+	console.log(`Connect to port at ${port}`);
+})
+
+
+app.post('/register', async(req, res) => {
+  // Suraj's field
+})
+
+
+app.post('/login', async(req, res) => {
+  // Suraj's field
+})
+
+
+route.get('/orders', async(req, res) => {
+  // Sandip's field
+})
+
+
+route.delete('/orders', async(req, res) => {
+  // Sandip's field
+})
+
+
+app.post('/orders', async(req, res) => {
   const { orderId, timeStamp, storeInfo, userAddress, status, items} = req.body; 
   const userId = isAuth(req);
   try {
@@ -31,28 +60,29 @@ route.post('/order', async(req, res) => {
       items,     
     })
     const result = await newOrders.save();
+    console.log(result);
     res.status(200).send(result);
   } catch (err) {
     res.status(400).send(err.message);
   }
 })
 
-app.listen(port, () => {
-	console.log(`Connect to port at ${port}`);
-})
 
-secretRoute.patch('/updateOrder', async(req, res) => {
-// search the order which has userId == req.body.useId and orderId === req.body.orderId
-// then update its status
-  const order = await orders.updateOne(
-    {
-      userId: req.body.userId,
-      orderId: req.body.orderId,
-    },
-    {
-      $set: {
-        status: updatedStatus,
-      }
-    }
-  )
-})
+// secretRoute.post('/updateOrder', async(req, res) => {
+// // search the order which has userId == req.body.useId and orderId === req.body.orderId
+// // then update its status
+//   const order = await orders.updateOne(
+//     {
+//       userId: req.body.userId,
+//       orderId: req.body.orderId,
+//     },
+//     {
+//       $set: {
+//         status: updatedStatus,
+//       }
+//     }
+//   )
+// })
+
+
+app.use('/', route);
