@@ -40,3 +40,19 @@ route.post('/order', async(req, res) => {
 app.listen(port, () => {
 	console.log(`Connect to port at ${port}`);
 })
+
+secretRoute.patch('/updateOrder', async(req, res) => {
+// search the order which has userId == req.body.useId and orderId === req.body.orderId
+// then update its status
+  const order = await orders.updateOne(
+    {
+      userId: req.body.userId,
+      orderId: req.body.orderId,
+    },
+    {
+      $set: {
+        status: updatedStatus,
+      }
+    }
+  )
+})
