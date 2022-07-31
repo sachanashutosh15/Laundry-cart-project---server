@@ -37,9 +37,19 @@ app.post('/login', async(req, res) => {
 })
 
 
-route.get('/orders', async(req, res) => {
-  // Sandip's field
-})
+app.get('/orders', async(req, res) => {
+  // Sandip's
+  const data = await ordersModel.find({userId:"ashutosh15"});
+  if(data.length === 0){
+    // app.render(createorder.js)
+    console.log("user do's not have a data")
+  }
+  else{
+    console.log(data);
+    res.send(data);
+  }  
+
+});
 
 
 route.delete('/orders', async(req, res) => {
