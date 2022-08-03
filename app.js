@@ -28,6 +28,10 @@ app.listen(process.env.PORT || port, () => {
 	console.log(`Connect to port at ${port}`);
 })
 
+app.get('/', async(req, res) => {
+	res.status(200).send("Welcome");
+})
+
 app.post('/register', async(req, res) => {
   console.log(req.body);
   const { email, name, password, state, district, address, pincode, phone } = req.body;
