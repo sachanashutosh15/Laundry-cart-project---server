@@ -6,4 +6,15 @@ function createAccessToken(userId) {
   })
 }
 
-module.exports = { createAccessToken };
+function sendAccessToken(res, req, accessToken) {
+  res.send({
+    result: "Logged in Successfully",
+    accessToken,
+    email: req.body.email,
+  })
+}
+
+module.exports = { 
+  createAccessToken,
+  sendAccessToken
+};
